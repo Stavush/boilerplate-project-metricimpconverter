@@ -1,6 +1,9 @@
+*{
+    font-family: 'Roboto', sans-serif;
+}
 code {
     background-color: whitesmoke;
-    color: blueviolet;
+
 }
 
 section, header {
