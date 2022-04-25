@@ -2,36 +2,40 @@ function ConvertHandler() {
 
   function splitNumsAndChars(input){
     let num = input.match(/[.\d\/]+/g) || ["1"];
-    let str = input.match(/[\w]+/g)[0];
+    let str = input.match(/[a-zA-Z]+/g)[0];
+    console.log("num: ", num[0], typeof(num[0]), "unit: ", str);  //TEST
     return [num[0], str];
   }
 
   function checkDivision(input){
     let nums = input.split("/");
-    nums.length > 2 ? false : nums;
+    return nums.length <= 2 ? nums : false;
   }
   
   this.getNum = function(input) {
-    let result = splitNumsAndChars(input)[0];
-    let nums = checkDivision(result);
-    !nums ? undefined : parseFloat(nums[0])/parseFloat(nums[1]);
+    let nums = checkDivision(splitNumsAndChars(input)[0]);
+    console.log("Get num func - nums:", nums); // TEST
+    if(!nums) {
+      return undefined;
+    }  else{
+        let num1 = nums[0];
+        let num2 = (nums[1] || ["1"]);
+      return parseFloat(nums1)/parseFloat(num2);
+    } 
   };
   
   this.getUnit = function(input) {
     let result = splitNumsAndChars(input)[1].toLowerCase();
+    console.log("getUnit - unit:", result); //TEST
     switch(result){
       case "gal":
-        return "gal";
+      case "mi":
+      case "km":
+      case "lbs":
+      case "kg":
+        return result;
       case "l":
         return "L";
-      case "mi":
-        return "mi";
-      case "km":
-        return "km";
-      case "lbs":
-        return "lbs";
-      case "kg":
-        return "kg";
       default:
         return undefined;
     }
@@ -101,7 +105,10 @@ function ConvertHandler() {
       default:
         result = undefined;
     }
-    return parseFloat(result.toFixed(5));
+    if(result){
+      return parseFloat(result.toFixed(5));
+    }
+    return undefined;
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
